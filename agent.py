@@ -17,7 +17,7 @@ class Agent:
         tools: Optional[list[Callable]] = None,
     ):
         self.llm_client = llm_client
-        self.model = model or os.environ.get("MODEL", "gpt-5.4-nano")
+        self.model = model or os.environ.get("MODEL", "gpt-5.4-mini")
         self.temperature = (
             temperature
             if temperature is not None
