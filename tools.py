@@ -1,4 +1,5 @@
 import math
+import subprocess
 from datetime import datetime
 from typing import Literal, Union
 
@@ -74,3 +75,41 @@ def calculator(
         return f"Error: Unknown operation '{operation}'. Use: {', '.join(operations.keys())}"
 
     return operations[operation](a, b)
+
+
+class RunTerminalCommandArgs(BaseModel):
+    command: str
+    timeout: int = 30
+
+
+class RunTerminalCommandCall(BaseModel):
+    tool_name: Literal["run_terminal_command"]
+    tool_args: RunTerminalCommandArgs
+
+
+def run_terminal_command(command: str, timeout: int = 30) -> str:
+    """Run a shell command and return its output.
+
+    Args:
+        command: The shell command to execute.
+        timeout: Seconds to wait before killing the command. Defaults to 30.
+
+    Returns:
+        The combined stdout and stderr output of the command, or an error message.
+    """
+    try:
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+        output = result.stdout
+        if result.stderr:
+            output += f"\nstderr: {result.stderr}"
+        return output.strip() or "(no output)"
+    except subprocess.TimeoutExpired:
+        return f"Error: Command timed out after {timeout} seconds"
+    except Exception as e:
+        return f"Error: {e}"

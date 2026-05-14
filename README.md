@@ -114,3 +114,20 @@ Have the LLM express a *wish* to call a tool and then execute that call in Pytho
 **Goal:** Given *"What time is it?"*, the LLM should respond with a tool call — specifying the tool name and any arguments — that you parse and execute to get a result.
 
 The LLM never runs code itself, it can't — it only declares what it wants to call and with what arguments.
+
+---
+
+### 🚀 Bonus Quests
+
+#### User Approval
+Before the agent executes any tool call, pause and ask the user *"Allow [tool_name] with args [args]? (y/n)"*. Only proceed if the user confirms. Maybe you can configure the tools such that you can allow some tools to run without approval, but require it for others.
+
+---
+
+#### Terminal Tool
+Wire the `run_terminal_command` tool to the agent. Let the LLM run shell commands and see their output. Be careful with this one — you might want to restrict which commands can be run or require user approval for safety.
+
+---
+
+#### Skills
+Add a `.agent/` (or simliar) folder and enable your agent to load [agent skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) from there.
